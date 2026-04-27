@@ -21,15 +21,67 @@
             box-sizing: border-box;
         }
 
+        /* Khóa cuộn trang khi chưa click vào mành hình chờ */
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text-main);
             background-color: var(--bg-white);
             line-height: 1.7;
-            overflow-x: hidden;
+            overflow: hidden; /* Sẽ được mở lại bằng JS sau khi click */
         }
 
-        /* Hero Section with Animated Gradient & Particles */
+        /* ================= MÀN HÌNH CHỜ (OVERLAY) ================= */
+        #enterOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.6); /* Nền tối mờ */
+            backdrop-filter: blur(12px); /* Làm mờ khung cảnh phía sau */
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #fff;
+            cursor: pointer;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        #enterOverlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .enter-content {
+            text-align: center;
+            animation: pulseText 2s infinite ease-in-out;
+        }
+
+        .enter-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .enter-content p {
+            font-size: 1.2rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 20px rgba(147, 197, 253, 0.6); }
+        }
+
+        /* ========================================================== */
+
+        /* Hero Section */
         .hero {
             position: relative;
             background: linear-gradient(-45deg, #fdfbfb, #ebedee, #e2e8f0, #fdfbfb);
@@ -39,6 +91,10 @@
             text-align: center;
             border-bottom: 1px solid #e2e8f0;
             overflow: hidden;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         @keyframes gradientBG {
@@ -47,7 +103,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Floating particles */
         .particle {
             position: absolute;
             border-radius: 50%;
@@ -70,8 +125,6 @@
             font-size: 3.8rem;
             color: var(--primary-color);
             margin-bottom: 20px;
-            opacity: 0;
-            animation: fadeDown 1s ease forwards 0.5s;
         }
 
         .hero p {
@@ -79,18 +132,6 @@
             color: var(--text-light);
             max-width: 700px;
             margin: 0 auto;
-            opacity: 0;
-            animation: fadeUp 1s ease forwards 1s;
-        }
-
-        @keyframes fadeDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Container & Layout */
@@ -143,7 +184,6 @@
             flex: 1;
         }
 
-        /* Advanced Image Hover with Shine Effect */
         .img-wrapper {
             position: relative;
             overflow: hidden;
@@ -206,38 +246,13 @@
             transform: translateX(10px);
         }
 
-        /* --- CSS cho phần lớp 9B --- */
-        .class-memories {
-            padding: 100px 20px;
-        }
-
-        .class-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .class-img-container {
-            width: 100%;
-            max-width: 900px;
-        }
-
-        .large-img {
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        }
-
-        .class-text-container {
-            max-width: 800px;
-            text-align: center;
-        }
-
-        .class-text-container p {
-            font-size: 1.1rem;
-            color: var(--text-main);
-            margin-bottom: 20px;
-            text-align: center;
-        }
+        /* CSS Lớp 9B */
+        .class-memories { padding: 100px 20px; }
+        .class-content { display: flex; flex-direction: column; align-items: center; gap: 40px; }
+        .class-img-container { width: 100%; max-width: 900px; }
+        .large-img { box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .class-text-container { max-width: 800px; text-align: center; }
+        .class-text-container p { font-size: 1.1rem; color: var(--text-main); margin-bottom: 20px; text-align: center; }
 
         /* Footer */
         footer {
@@ -249,33 +264,34 @@
             overflow: hidden;
         }
 
-        footer p {
-            font-size: 1rem;
-            opacity: 0.9;
-            position: relative;
-            z-index: 2;
-        }
+        footer p { font-size: 1rem; opacity: 0.9; position: relative; z-index: 2; }
 
-        /* --- Scroll Animation Classes (JS sẽ kích hoạt) --- */
+        /* Scroll Animations */
         .hidden-up { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
         .hidden-left { opacity: 0; transform: translateX(-50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
         .hidden-right { opacity: 0; transform: translateX(50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
-        
         .show { opacity: 1; transform: translate(0, 0); }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
-            .row, .row.reverse {
-                flex-direction: column;
-                gap: 40px;
-            }
+            .row, .row.reverse { flex-direction: column; gap: 40px; }
             .section-title { font-size: 2.2rem; }
+            .enter-content h2 { font-size: 1.8rem; padding: 0 20px; }
         }
     </style>
 </head>
 <body>
 
+    <div id="enterOverlay">
+        <div class="enter-content">
+            <h2>Hành Trình & Kỷ Niệm Cấp 2</h2>
+            <p>[ Nhấp chuột để khám phá ]</p>
+        </div>
+    </div>
+    <audio id="bgMusic" loop>
+        <source src="https://github.com/minhfansubdev/mp3/raw/refs/heads/main/Tuy%E1%BB%83n%20t%E1%BA%ADp%20nh%E1%BB%AFng%20b%C3%A0i%20h%C3%A1t%20v%E1%BB%81%20tu%E1%BB%95i%20h%E1%BB%8Dc%20tr%C3%B2%20hay%20nh%E1%BA%A5t%20%5BRz1pbtqBdVQ%5D.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ thẻ audio.
+    </audio>
     <header class="hero">
         <div id="particles"></div>
         <div class="hero-content">
@@ -371,6 +387,37 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // --- JAVASCRIPT CHO NHẠC NỀN VÀ MÀN HÌNH CHỜ ---
+            const overlay = document.getElementById('enterOverlay');
+            const bgMusic = document.getElementById('bgMusic');
+
+            function playMusic() {
+                bgMusic.volume = 0.5; // Thiết lập âm lượng (50%)
+                bgMusic.play().catch(error => {
+                    console.log("Không thể tự phát nhạc: ", error);
+                });
+            }
+
+            // Xử lý sự kiện click vào màn hình chờ
+            overlay.addEventListener('click', function() {
+                // 1. Ẩn màn hình chờ
+                overlay.classList.add('hidden');
+                
+                // 2. Mở khóa thanh cuộn (scroll)
+                document.body.style.overflow = 'auto'; 
+                document.body.style.overflowX = 'hidden'; 
+                
+                // 3. Phát nhạc ngay lập tức
+                playMusic();
+                
+                // 4. Xóa overlay khỏi DOM sau khi hiệu ứng fade out hoàn thành (giúp nhẹ web)
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 1000);
+            });
+
+
+            // --- JAVASCRIPT CHO HIỆU ỨNG CUỘN TRANG & HẠT BỤI BAY ---
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
